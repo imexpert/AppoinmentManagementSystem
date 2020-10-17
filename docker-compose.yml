@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  Appointmentschedule.api:
+    image: ${DOCKER_REGISTRY-}Appointmentscheduleapi
+    build:
+      context: .
+      dockerfile: Services/AppointmentSchedule/AppointmentSchedule.Api/Dockerfile
+
+  administration.api:
+    image: ${DOCKER_REGISTRY-}administrationapi
+    build:
+      context: .
+      dockerfile: Services/Administration/Administration.Api/Dockerfile
+
+
+  countymanagement.api:
+    image: ${DOCKER_REGISTRY-}countymanagementapi
+    build:
+      context: .
+      dockerfile: Services/CountyManagement/CountyManagement.Api/Dockerfile
+
+
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.Api/Dockerfile
+
+
+  call.api:
+    image: ${DOCKER_REGISTRY-}callapi
+    build:
+      context: .
+      dockerfile: Services/Call/Call.Api/Dockerfile
+
+
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: Services/Identity/Identity.Api/Dockerfile
+
