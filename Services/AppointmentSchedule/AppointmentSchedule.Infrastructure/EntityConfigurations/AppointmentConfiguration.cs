@@ -1,7 +1,7 @@
 ﻿using AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate;
 using AppointmentSchedule.Domain.Aggregates.CountyAggregate;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -11,65 +11,64 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
 {
     public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
     {
-        public void Configure(EntityTypeBuilder<Appointment> appointmenConfiguration)
+        public void Configure(EntityTypeBuilder<Appointment> appointmentConfiguration)
         {
-            appointmenConfiguration.ToTable("Appointment", AppointmentScheduleContext.DEFAULT_SCHEMA);
+            appointmentConfiguration.ToTable("Appointments", AppoinmentScheduleContext.DEFAULT_SCHEMA);
 
-            appointmenConfiguration.HasKey(a => a.Id);
+            appointmentConfiguration.HasKey(s => s.Id);
+            appointmentConfiguration.Ignore(s => s.DomainEvents);
+            appointmentConfiguration
+                .Property(s => s.Id)
+                .UseHiLo("appointmentseq", AppoinmentScheduleContext.DEFAULT_SCHEMA);
 
-            appointmenConfiguration.Ignore(a => a.DomainEvents);
-
-            appointmenConfiguration.Property(a => a.Id).UseHiLo("appointmentseq", AppointmentScheduleContext.DEFAULT_SCHEMA);
-
-            // bu maplame işlemine gerek yok. Çünkü property ismi ile sutun ismi aynı ve nullable değil
-            appointmenConfiguration
-                .Property(a => a.AppoinmentTime)
+            //
+            appointmentConfiguration.Property(s => s.AppoinmentTime)
                 .UsePropertyAccessMode(PropertyAccessMode.Property)
                 .HasColumnName("AppoinmentTime")
                 .IsRequired();
 
-            appointmenConfiguration
-                .Property<int>("_cityId")
-                .UsePropertyAccessMode(PropertyAccessMode.Field)
+            appointmentConfiguration.Property<int>("_cityId")
+                .UsePropertyAccessMode(PropertyAccessMode.Property)
                 .HasColumnName("CityId")
                 .IsRequired();
 
-            appointmenConfiguration
+            appointmentConfiguration
                 .HasOne<County>()
                 .WithMany()
                 .IsRequired()
                 .HasForeignKey("_cityId");
 
-            appointmenConfiguration
-                .HasOne(a => a.Citizen)
+            appointmentConfiguration.Metadata
+                .FindNavigation(nameof(Appointment.Citizen))
+                .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            appointmentConfiguration
+                .HasOne(s => s.Citizen)
                 .WithMany()
                 .IsRequired()
-                .HasForeignKey("_citizenId");
+                .HasForeignKey("CitizenId");
 
-            appointmenConfiguration
-                .Property("_statusId")
+            appointmentConfiguration.Property<int>("_statusId")
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
                 .HasColumnName("StatusId")
                 .IsRequired();
 
-            appointmenConfiguration
-                .HasOne(a => a.Status)
+            appointmentConfiguration
+                .HasOne(s => s.Status)
                 .WithMany()
                 .IsRequired()
                 .HasForeignKey("_statusId");
 
-            appointmenConfiguration
-              .Property("_appointmentTypeId")
-              .UsePropertyAccessMode(PropertyAccessMode.Field)
-              .HasColumnName("AppointmentTypeId")
-              .IsRequired();
+            appointmentConfiguration.Property<int>("_appointmentTypeId")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("AppointmentTypeId")
+                .IsRequired();
 
-            appointmenConfiguration
-                .HasOne(a => a.AppointmentType)
+            appointmentConfiguration
+                .HasOne(s => s.AppointmentType)
                 .WithMany()
                 .IsRequired()
                 .HasForeignKey("_appointmentTypeId");
-
         }
     }
 }
