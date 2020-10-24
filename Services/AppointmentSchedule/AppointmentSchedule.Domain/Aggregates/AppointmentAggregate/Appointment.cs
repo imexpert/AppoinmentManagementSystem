@@ -17,6 +17,7 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
 
         private int _appointmentTypeId;
         public AppointmentType AppointmentType { get; private set; }
+
         private int _cityId;
 
         private int _statusId;
@@ -43,7 +44,7 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
 
             _citizen = new Citizen(name, lastname, tcIdentity, phoneNumber);
 
-            AddDomainEvent()
+            //AddDomainEvent()
         }
 
         public void CancelAppointment()
