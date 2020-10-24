@@ -11,39 +11,37 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Citizen> citizenConfiguration)
         {
-            citizenConfiguration.ToTable("Citizens", AppointmentScheduleContext.DEFAULT_SCHEMA);
-
-            citizenConfiguration.HasKey(a => a.Id);
-
-            citizenConfiguration.Property(a => a.Id).UseHiLo("citizenseq", AppointmentScheduleContext.DEFAULT_SCHEMA);
+            citizenConfiguration.ToTable("Citizens", AppoinmentScheduleContext.DEFAULT_SCHEMA);
 
             citizenConfiguration
-                .Property(a => a.Name)
+                .Property(s => s.Id)
+                .UseHiLo("citizenseq", AppoinmentScheduleContext.DEFAULT_SCHEMA);
+
+            citizenConfiguration
+                .HasKey(s => s.Id);
+
+            citizenConfiguration
+                .Property(s => s.Name)
                 .HasMaxLength(100)
                 .IsRequired();
 
             citizenConfiguration
-                .Property(a => a.Lastname)
+                .Property(s => s.Lastname)
                 .HasMaxLength(100)
                 .IsRequired();
 
             citizenConfiguration
-                .Property(a => a.TcIdentity)
+                .Property(s => s.TcIdentity)
                 .HasMaxLength(11)
                 .IsRequired();
 
-            citizenConfiguration
-                .HasIndex(a => a.TcIdentity)
-                .IsUnique(true);
-
+            citizenConfiguration.HasIndex(s => s.TcIdentity).IsUnique();
 
             citizenConfiguration
-             .OwnsOne(a => a.PhoneNumber, o =>
-             {
-                 o.WithOwner();
-             });
-
-
+                .OwnsOne(s => s.PhoneNumber, s => 
+                { 
+                    s.WithOwner(); 
+                });
         }
     }
 }

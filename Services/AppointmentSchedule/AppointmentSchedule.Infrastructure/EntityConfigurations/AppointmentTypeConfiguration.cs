@@ -1,4 +1,5 @@
-﻿using AppointmentSchedule.Domain.Enumerations;
+﻿using AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate;
+using AppointmentSchedule.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -11,21 +12,22 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<AppointmentType> appointmentTypeConfiguration)
         {
-            appointmentTypeConfiguration.ToTable("AppointmentTypes", AppointmentScheduleContext.DEFAULT_SCHEMA);
+            appointmentTypeConfiguration.ToTable("AppointmentTypes", AppoinmentScheduleContext.DEFAULT_SCHEMA);
 
             appointmentTypeConfiguration
-                .HasKey(a => a.Id);
+                .HasKey(s => s.Id);
 
             appointmentTypeConfiguration
-                .Property(a => a.Id)
+                .Property(s => s.Id)
                 .HasDefaultValue(1)
                 .ValueGeneratedNever()
                 .IsRequired();
 
             appointmentTypeConfiguration
-                .Property(a => a.Name)
+                .Property(s => s.Name)
                 .HasMaxLength(200)
-                .IsRequired();          
+                .IsRequired();
+
         }
     }
 }
