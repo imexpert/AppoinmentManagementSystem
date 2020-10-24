@@ -43,7 +43,7 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
 
             _citizen = new Citizen(name, lastname, tcIdentity, phoneNumber);
 
-            AddDomainEvent()
+            //AddDomainEvent()
         }
 
         public void CancelAppointment()
