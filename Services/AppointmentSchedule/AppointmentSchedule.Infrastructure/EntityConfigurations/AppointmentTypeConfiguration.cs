@@ -15,10 +15,6 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
             appointmentTypeConfiguration.ToTable("AppointmentTypes", AppoinmentScheduleContext.DEFAULT_SCHEMA);
 
             appointmentTypeConfiguration
-                .Property(s => s.Id)
-                .UseHiLo("appointmenttypeseq", AppoinmentScheduleContext.DEFAULT_SCHEMA);
-
-            appointmentTypeConfiguration
                 .HasKey(s => s.Id);
 
             appointmentTypeConfiguration

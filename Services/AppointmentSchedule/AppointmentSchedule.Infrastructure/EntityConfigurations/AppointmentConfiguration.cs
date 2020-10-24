@@ -1,5 +1,6 @@
 ﻿using AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate;
 using AppointmentSchedule.Domain.Aggregates.CountyAggregate;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -37,11 +38,15 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
                 .IsRequired()
                 .HasForeignKey("_cityId");
 
+            appointmentConfiguration.Metadata
+                .FindNavigation(nameof(Appointment.Citizen))
+                .SetPropertyAccessMode(PropertyAccessMode.Field);
+
             appointmentConfiguration
                 .HasOne(s => s.Citizen)
                 .WithMany()
                 .IsRequired()
-                .HasForeignKey("_citizenId");
+                .HasForeignKey("CitizenId");
 
             appointmentConfiguration.Property<int>("_statusId")
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
