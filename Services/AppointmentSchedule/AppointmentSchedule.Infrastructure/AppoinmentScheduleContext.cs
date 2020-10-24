@@ -3,6 +3,7 @@ using AppointmentSchedule.Domain.Aggregates.AppoinmentAggregate;
 using AppointmentSchedule.Domain.Aggregates.CountyAggregate;
 using AppointmentSchedule.Domain.Aggregates.NotificationAggregate;
 using AppointmentSchedule.Domain.Enumerations;
+using AppointmentSchedule.Infrastructure.EntityConfigurations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using NVI.DomainBase;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,11 +50,11 @@ namespace AppointmentSchedule.Infrastructure
         {
             modelBuilder.ApplyConfiguration(new AppointmentConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CitizenConfiguration());
+            modelBuilder.ApplyConfiguration(new CountyConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new StatusTypeConfiguration());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -128,7 +130,7 @@ namespace AppointmentSchedule.Infrastructure
         public AppoinmentScheduleContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppoinmentScheduleContext>()
-                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
+                .UseSqlServer("Server=.;Initial Catalog=AppointmentSchedule;Integrated Security=true");
 
             return new AppoinmentScheduleContext(optionsBuilder.Options, new NoMediator());
         }

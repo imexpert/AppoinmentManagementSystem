@@ -38,7 +38,10 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
             citizenConfiguration.HasIndex(s => s.TcIdentity).IsUnique();
 
             citizenConfiguration
-                .OwnsOne(s => s.PhoneNumber, s => { s.WithOwner(); });
+                .OwnsOne(s => s.PhoneNumber, s => 
+                { 
+                    s.WithOwner(); 
+                });
         }
     }
 }
