@@ -33,15 +33,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordering", "Ordering", "{16
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{2778F70A-19A5-4667-92AF-C39B1FDF53EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Api", "Services\Identity\Identity.Api\Identity.Api.csproj", "{4164F2F0-AE18-42F2-8E98-3E7127EBF036}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Api", "Services\Identity\Identity.Api\Identity.Api.csproj", "{4164F2F0-AE18-42F2-8E98-3E7127EBF036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSchedule.Domain", "Services\AppointmentSchedule\AppointmentSchedule.Domain\AppointmentSchedule.Domain.csproj", "{D5542F69-08D9-44D7-A730-239953B391C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedule.Domain", "Services\AppointmentSchedule\AppointmentSchedule.Domain\AppointmentSchedule.Domain.csproj", "{D5542F69-08D9-44D7-A730-239953B391C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSchedule.Infrastructure", "Services\AppointmentSchedule\AppointmentSchedule.Infrastructure\AppointmentSchedule.Infrastructure.csproj", "{BD6057C9-D3CD-48D2-A626-8F738A482419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedule.Infrastructure", "Services\AppointmentSchedule\AppointmentSchedule.Infrastructure\AppointmentSchedule.Infrastructure.csproj", "{BD6057C9-D3CD-48D2-A626-8F738A482419}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{626EF882-2022-4CFE-A44C-497749B34E77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NVI.DomainBase", "Framework\NVI.DomainBase\NVI.DomainBase.csproj", "{1D771E69-DDA5-4753-A93D-2B6B970FC887}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NVI.DomainBase", "Framework\NVI.DomainBase\NVI.DomainBase.csproj", "{1D771E69-DDA5-4753-A93D-2B6B970FC887}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NVI.WebHost.Extensions", "Framework\NVI.WebHost.Extensions\NVI.WebHost.Extensions.csproj", "{193F3C7E-F2D8-4174-BE82-A3640551E592}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NVI.Utilities", "Framework\NVI.Utilities\NVI.Utilities.csproj", "{C63AC86A-7F32-45D0-A35C-FEF8619599D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +93,14 @@ Global
 		{1D771E69-DDA5-4753-A93D-2B6B970FC887}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D771E69-DDA5-4753-A93D-2B6B970FC887}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D771E69-DDA5-4753-A93D-2B6B970FC887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{193F3C7E-F2D8-4174-BE82-A3640551E592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{193F3C7E-F2D8-4174-BE82-A3640551E592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{193F3C7E-F2D8-4174-BE82-A3640551E592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{193F3C7E-F2D8-4174-BE82-A3640551E592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C63AC86A-7F32-45D0-A35C-FEF8619599D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63AC86A-7F32-45D0-A35C-FEF8619599D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C63AC86A-7F32-45D0-A35C-FEF8619599D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C63AC86A-7F32-45D0-A35C-FEF8619599D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +121,8 @@ Global
 		{D5542F69-08D9-44D7-A730-239953B391C4} = {02B023D6-D11C-4D85-B32F-8C51A7449821}
 		{BD6057C9-D3CD-48D2-A626-8F738A482419} = {02B023D6-D11C-4D85-B32F-8C51A7449821}
 		{1D771E69-DDA5-4753-A93D-2B6B970FC887} = {626EF882-2022-4CFE-A44C-497749B34E77}
+		{193F3C7E-F2D8-4174-BE82-A3640551E592} = {626EF882-2022-4CFE-A44C-497749B34E77}
+		{C63AC86A-7F32-45D0-A35C-FEF8619599D4} = {626EF882-2022-4CFE-A44C-497749B34E77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE45C056-EC60-46C7-8E98-0D42371DC52A}

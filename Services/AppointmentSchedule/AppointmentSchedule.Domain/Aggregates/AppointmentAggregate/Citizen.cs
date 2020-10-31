@@ -13,6 +13,9 @@ namespace AppointmentSchedule.Domain.Aggregates.AppoinmentAggregate
         public string TcIdentity { get; set; }
         public PhoneNumber PhoneNumber { get; private set; }
 
+        protected Citizen()
+        { }
+
         public Citizen(string name, string lastname, string tcIdentity, PhoneNumber phoneNumber)
         {
             Name = name;

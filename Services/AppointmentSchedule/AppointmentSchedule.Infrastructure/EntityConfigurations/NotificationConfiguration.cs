@@ -54,7 +54,7 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
 
             notificationConfiguration
                 .HasOne(s => s.Appointment)
-                .WithOne()
+                .WithMany()
                 .IsRequired()
                 .HasForeignKey("_appointmentId");
         }

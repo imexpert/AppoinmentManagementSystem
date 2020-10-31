@@ -8,6 +8,8 @@ namespace AppointmentSchedule.Domain.Aggregates.CountyAggregate
     public class County : Entity, IAggregateRoot
     {
         public string Name { get; private set; }
+        protected County()
+        { }
         public County(string name)
         {
             Name = name;

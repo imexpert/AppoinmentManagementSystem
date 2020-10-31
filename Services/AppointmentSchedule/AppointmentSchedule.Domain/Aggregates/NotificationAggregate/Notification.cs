@@ -19,6 +19,9 @@ namespace AppointmentSchedule.Domain.Aggregates.NotificationAggregate
         private int _appointmentId;
         public Appointment Appointment { get; private set; }
 
+        protected Notification()
+        { }
+
         public Notification(string name, int notificationTypeId, string source, PhoneNumber destination, int appointmentId)
         {
             Content = name;
