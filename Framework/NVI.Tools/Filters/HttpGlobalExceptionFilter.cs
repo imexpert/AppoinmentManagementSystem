@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NVI.Tools.ActionResults;
+using NVI.Utilities.ActionResults;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace NVI.Tools.Filters
+namespace NVI.Utilities.Filters
 {
     public class HttpGlobalExceptionFilter<T> : IExceptionFilter where T : Exception
     {

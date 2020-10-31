@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NVI.DomainBase", "Framework
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NVI.WebHost.Extensions", "Framework\NVI.WebHost.Extensions\NVI.WebHost.Extensions.csproj", "{193F3C7E-F2D8-4174-BE82-A3640551E592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NVI.Tools", "Framework\NVI.Tools\NVI.Tools.csproj", "{5BCAF604-E6A7-4201-B70A-27B6EB389C00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NVI.Utilities", "Framework\NVI.Tools\NVI.Utilities.csproj", "{5BCAF604-E6A7-4201-B70A-27B6EB389C00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

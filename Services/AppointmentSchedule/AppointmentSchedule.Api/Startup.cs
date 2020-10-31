@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppoinmentSchedule.Api.Controllers;
 using AppointmentSchedule.Api.Infrastructure.Filters;
+using AppointmentSchedule.Domain.Exceptions;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -12,8 +13,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NVI.Utilities.Filters;
 
 namespace AppoinmentSchedule.Api
 {
@@ -59,7 +62,7 @@ namespace AppoinmentSchedule.Api
             // Add framework services.
             services.AddControllers(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<AppointmentScheduleException>));
             })
                 // Added for functional tests
                 .AddApplicationPart(typeof(AppointmentScheduleController).Assembly)
@@ -76,6 +79,27 @@ namespace AppoinmentSchedule.Api
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
+
+            hcBuilder
+                .AddSqlServer(
+                    configuration["ConnectionString"],
+                    name: "AppointmentScheduleDb-check",
+                    tags: new string[] { "appointmentscheduledb" });
+
+            hcBuilder
+                    .AddRabbitMQ(
+                        $"amqp://{configuration["EventBusConnection"]}",
+                        name: "appointmentmgm-rabbitmqbus-check",
+                        tags: new string[] { "rabbitmqbus" });
 
             return services;
         }
@@ -99,36 +123,10 @@ namespace AppoinmentSchedule.Api
                 endpoints.MapControllers();
             });
         }
+
     }
 }
 
-//public virtual IServiceProvider ConfigureServices(IServiceCollection services)
-//{
-//    services
-//        .AddGrpc(options =>
-//        {
-//            options.EnableDetailedErrors = true;
-//        })
-//        .Services
-//        .AddApplicationInsights(Configuration)
-//        .AddCustomMvc()
-//        .AddHealthChecks(Configuration)
-//        .AddCustomDbContext(Configuration)
-//        .AddCustomSwagger(Configuration)
-//        .AddCustomIntegrations(Configuration)
-//        .AddCustomConfiguration(Configuration)
-//        .AddEventBus(Configuration)
-//        .AddCustomAuthentication(Configuration);
-//    //configure autofac
-
-//    var container = new ContainerBuilder();
-//    container.Populate(services);
-
-//    container.RegisterModule(new MediatorModule());
-//    container.RegisterModule(new ApplicationModule(Configuration["ConnectionString"]));
-
-//    return new AutofacServiceProvider(container.Build());
-//}
 
 
 //public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -225,38 +223,7 @@ namespace AppoinmentSchedule.Api
 
 
 
-//    public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
-//    {
-//        var hcBuilder = services.AddHealthChecks();
 
-//        hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
-
-//        hcBuilder
-//            .AddSqlServer(
-//                configuration["ConnectionString"],
-//                name: "OrderingDB-check",
-//                tags: new string[] { "orderingdb" });
-
-//        if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
-//        {
-//            hcBuilder
-//                .AddAzureServiceBusTopic(
-//                    configuration["EventBusConnection"],
-//                    topicName: "eshop_event_bus",
-//                    name: "ordering-servicebus-check",
-//                    tags: new string[] { "servicebus" });
-//        }
-//        else
-//        {
-//            hcBuilder
-//                .AddRabbitMQ(
-//                    $"amqp://{configuration["EventBusConnection"]}",
-//                    name: "ordering-rabbitmqbus-check",
-//                    tags: new string[] { "rabbitmqbus" });
-//        }
-
-//        return services;
-//    }
 
 //    public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
 //    {

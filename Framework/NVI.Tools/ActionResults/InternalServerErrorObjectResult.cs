@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NVI.Tools.ActionResults
+namespace NVI.Utilities.ActionResults
 {
     public class InternalServerErrorObjectResult : ObjectResult
     {

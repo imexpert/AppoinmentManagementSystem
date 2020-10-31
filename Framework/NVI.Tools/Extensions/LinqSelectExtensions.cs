@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NVI.Tools.Extensions
+namespace NVI.Utilities.Extensions
 {
     public static class LinqSelectExtensions
     {
