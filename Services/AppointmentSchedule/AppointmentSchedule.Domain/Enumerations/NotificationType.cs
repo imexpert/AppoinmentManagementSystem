@@ -17,4 +17,3 @@ namespace AppointmentSchedule.Domain.Enumerations
         public static NotificationType SMS = new NotificationType(2, "SMS");
     }
 }
-}

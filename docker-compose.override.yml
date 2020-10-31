@@ -1,47 +1,42 @@
 version: '3.4'
 
 services:
-  appoinmentschedule.api:
+  seq:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ACCEPT_EULA=Y
     ports:
-      - "80"
-      - "443"
+      - "5340:80"
+
+  sqldata:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-  administration.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
+      - appointmentmgm-sqldata:/var/opt/mssql
 
+  nosqldata:
+     ports:
+       - "27017:27017"
+     volumes:
+       - appointmentmgm-nosqldata:/data/db
 
-  countymanagement.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
+  cachedata:
+     ports:
+       - "6379:6379"
+     volumes:
+       - appointmentmgm-cachedata:/data
 
+  rabbitmq:
+     ports:
+       - "15672:15672"
+       - "5672:5672"
 
-  ordering.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
-
-
-  call.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
-
-
-  identity.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
-
+volumes:
+  appointmentmgm-sqldata:
+    external: false
+  appointmentmgm-nosqldata:
+    external: false
+  appointmentmgm-cachedata:
+    external: false

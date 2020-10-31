@@ -1,43 +1,21 @@
 version: '3.4'
 
 services:
-  Appointmentschedule.api:
-    image: ${DOCKER_REGISTRY-}Appointmentscheduleapi
-    build:
-      context: .
-      dockerfile: Services/AppointmentSchedule/AppointmentSchedule.Api/Dockerfile
 
-  administration.api:
-    image: ${DOCKER_REGISTRY-}administrationapi
-    build:
-      context: .
-      dockerfile: Services/Administration/Administration.Api/Dockerfile
+  seq:
+    image: datalust/seq:latest
 
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2017-latest
 
-  countymanagement.api:
-    image: ${DOCKER_REGISTRY-}countymanagementapi
-    build:
-      context: .
-      dockerfile: Services/CountyManagement/CountyManagement.Api/Dockerfile
+  nosqldata:
+    image: mongo
 
+  cachedata:
+    image: redis:alpine
 
-  ordering.api:
-    image: ${DOCKER_REGISTRY-}orderingapi
-    build:
-      context: .
-      dockerfile: Services/Ordering/Ordering.Api/Dockerfile
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
 
-
-  call.api:
-    image: ${DOCKER_REGISTRY-}callapi
-    build:
-      context: .
-      dockerfile: Services/Call/Call.Api/Dockerfile
-
-
-  identity.api:
-    image: ${DOCKER_REGISTRY-}identityapi
-    build:
-      context: .
-      dockerfile: Services/Identity/Identity.Api/Dockerfile
-
+  appointmentschedulegw:
+    image: envoyproxy/envoy:v1.11.1

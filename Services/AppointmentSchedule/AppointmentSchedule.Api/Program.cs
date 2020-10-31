@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AppointmentSchedule.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using NVI.WebHost.Extensions;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
+using AppointmentSchedule.Api.Infrastructure;
+using Microsoft.AspNetCore;
+using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace AppoinmentSchedule.Api
 {
@@ -15,65 +23,6 @@ namespace AppoinmentSchedule.Api
     {
         public static readonly string Namespace = typeof(Program).Namespace;
         public static readonly string AppName = Namespace.Split(".")[0];
-
-        public static void Main(string[] args)
-        {
-            var configuration = GetConfiguration();
-
-            Log.Logger = CreateSerilogLogger(configuration);
-
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
-        {
-            //Seq log monitör arayüzü
-            
-            var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-            var logstashUrl = configuration["Serilog:LogstashgUrl"];
-            return new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.WithProperty("ApplicationContext", AppName)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl) // ToDo : logstash'e b şekilde göndermemiz bir performans problemi?
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
-        }
-
-        private static IConfiguration GetConfiguration()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-
-            var config = builder.Build();
-
-            if (config.GetValue<bool>("UseVault", false))
-            {
-                //ToDo:: ConfidentialVariable will be fetched from HashiCorp Vault
-
-                //builder.AddAzureKeyVault(
-                //    $"https://{config["Vault:Name"]}.vault.azure.net/",
-                //    config["Vault:ClientId"],
-                //    config["Vault:ClientSecret"]);
-            }
-
-            return builder.Build();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-
-
-        /*
-         * 
 
         public static int Main(string[] args)
         {
@@ -87,17 +36,15 @@ namespace AppoinmentSchedule.Api
                 var host = BuildWebHost(configuration, args);
 
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
-                host.MigrateDbContext<OrderingContext>((context, services) =>
+                host.MigrateDbContext<AppoinmentScheduleContext>((context, services) =>
                 {
                     var env = services.GetService<IWebHostEnvironment>();
-                    var settings = services.GetService<IOptions<OrderingSettings>>();
-                    var logger = services.GetService<ILogger<OrderingContextSeed>>();
+                    var logger = services.GetService<ILogger<AppoinmentScheduleContextSeed>>();
 
-                    new OrderingContextSeed()
-                        .SeedAsync(context, env, settings, logger)
+                    new AppoinmentScheduleContextSeed()
+                        .SeedAsync(context, env, logger)
                         .Wait();
-                })
-                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+                });
 
                 Log.Information("Starting web host ({ApplicationContext})...", AppName);
                 host.Run();
@@ -140,6 +87,8 @@ namespace AppoinmentSchedule.Api
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
+            //Seq log monitör arayüzü
+            
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
             return new LoggerConfiguration()
@@ -148,7 +97,7 @@ namespace AppoinmentSchedule.Api
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl)
+                .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl) // ToDo : logstash'e b şekilde göndermemiz bir performans problemi?
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
         }
@@ -164,14 +113,17 @@ namespace AppoinmentSchedule.Api
 
             if (config.GetValue<bool>("UseVault", false))
             {
-                builder.AddAzureKeyVault(
-                    $"https://{config["Vault:Name"]}.vault.azure.net/",
-                    config["Vault:ClientId"],
-                    config["Vault:ClientSecret"]);
+                //ToDo:: ConfidentialVariable will be fetched from HashiCorp Vault
+
+                //builder.AddAzureKeyVault(
+                //    $"https://{config["Vault:Name"]}.vault.azure.net/",
+                //    config["Vault:ClientId"],
+                //    config["Vault:ClientSecret"]);
             }
 
             return builder.Build();
         }
+
         private static (int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
         {
             var grpcPort = config.GetValue("GRPC_PORT", 5001);
@@ -179,6 +131,11 @@ namespace AppoinmentSchedule.Api
             return (port, grpcPort);
         }
 
-         */
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

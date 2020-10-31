@@ -20,8 +20,9 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
 
         private int _appointmentTypeId;
         public AppointmentType AppointmentType { get; private set; }
-        private int _cityId;
-
+        
+        private int _countyId;
+        
         private int _statusId;
         public StatusType Status { get; private set; }
 
@@ -33,7 +34,7 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
         public Appointment(
             DateTime appoinmentTime, 
             int appointmentTypeId, 
-            int cityId, 
+            int countyId, 
             string name, 
             string lastname, 
             string tcIdentity,
@@ -42,7 +43,7 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
             AppoinmentTime = appoinmentTime;
             _appointmentTypeId = appointmentTypeId;
             _statusId = StatusType.Active.Id;
-            _cityId = cityId;
+            _countyId = countyId;
 
             _citizen = new Citizen(name, lastname, tcIdentity, phoneNumber);
 
