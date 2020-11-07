@@ -39,9 +39,13 @@ namespace AppointmentSchedule.Api.Business.Queries
 
         public async Task<IEnumerable<AppointmentViewModel>> GetAppointmentsByDateAsync(string tcIdentity, DateTime appointmentDate)
         {
+            var start = appointmentDate.Date;
+            var end = appointmentDate.AddDays(1).Date;
             var appointmentResult = await GetAppointments()
-              .Where(k => k.TcIdentity == tcIdentity)
+              .Where(k => k.TcIdentity == tcIdentity && start<= k.AppoinmentTime  && end >=k.AppoinmentTime )
               .ToListAsync();
+
+          
             return appointmentResult;
         }
 

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Ntrada\Ntrada.csproj" />
+      <ProjectReference Include="..\Ntrada.Extensions.Cors\Ntrada.Extensions.Cors.csproj" />
+      <ProjectReference Include="..\Ntrada.Extensions.CustomErrors\Ntrada.Extensions.CustomErrors.csproj" />
+      <ProjectReference Include="..\Ntrada.Extensions.Jwt\Ntrada.Extensions.Jwt.csproj" />
+      <ProjectReference Include="..\Ntrada.Extensions.RabbitMq\Ntrada.Extensions.RabbitMq.csproj" />
+      <ProjectReference Include="..\Ntrada.Extensions.Tracing\Ntrada.Extensions.Tracing.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="ntrada.yml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NetEscapades.Configuration.Yaml" Version="1.6.0" />
+    </ItemGroup>
+
+</Project>

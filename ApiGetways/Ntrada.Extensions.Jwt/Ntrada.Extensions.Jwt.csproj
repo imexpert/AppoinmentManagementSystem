@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-    <ProjectReference Include="..\..\src\Ntrada\Ntrada.csproj" />
+    <ProjectReference Include="..\Ntrada\Ntrada.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">

@@ -65,6 +65,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ntrada.Extensions.Swagger",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ntrada.Extensions.Tracing", "ApiGetways\Ntrada.Extensions.Tracing\Ntrada.Extensions.Tracing.csproj", "{F9BD3D69-6E5B-444F-B6AC-228D9E7343E7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ntrada", "ApiGetways\Ntrada\Ntrada.csproj", "{1EF03D80-BE42-4192-94AD-31D926365967}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ntrada.Host", "ApiGetways\Ntrada.Host\Ntrada.Host.csproj", "{6BDBE28A-D5BE-4A80-ABC0-3BB690C56FD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +159,14 @@ Global
 		{F9BD3D69-6E5B-444F-B6AC-228D9E7343E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9BD3D69-6E5B-444F-B6AC-228D9E7343E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9BD3D69-6E5B-444F-B6AC-228D9E7343E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF03D80-BE42-4192-94AD-31D926365967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF03D80-BE42-4192-94AD-31D926365967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF03D80-BE42-4192-94AD-31D926365967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF03D80-BE42-4192-94AD-31D926365967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BDBE28A-D5BE-4A80-ABC0-3BB690C56FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDBE28A-D5BE-4A80-ABC0-3BB690C56FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BDBE28A-D5BE-4A80-ABC0-3BB690C56FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BDBE28A-D5BE-4A80-ABC0-3BB690C56FD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,6 +198,8 @@ Global
 		{3E268556-62C9-4A75-A9F9-58C964E51D6E} = {24EDC979-A51D-4CDE-B3A6-77095DB489D3}
 		{2A680439-B1F4-4A4B-8C00-BD6CF91BCDA4} = {24EDC979-A51D-4CDE-B3A6-77095DB489D3}
 		{F9BD3D69-6E5B-444F-B6AC-228D9E7343E7} = {24EDC979-A51D-4CDE-B3A6-77095DB489D3}
+		{1EF03D80-BE42-4192-94AD-31D926365967} = {24EDC979-A51D-4CDE-B3A6-77095DB489D3}
+		{6BDBE28A-D5BE-4A80-ABC0-3BB690C56FD6} = {24EDC979-A51D-4CDE-B3A6-77095DB489D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE45C056-EC60-46C7-8E98-0D42371DC52A}
