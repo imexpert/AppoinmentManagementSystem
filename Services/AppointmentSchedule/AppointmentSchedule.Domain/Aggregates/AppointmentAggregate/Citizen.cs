@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AppointmentSchedule.Domain.Aggregates.AppoinmentAggregate
 {
-    public class Citizen : Entity, IAggregateRoot
+    public class Citizen : Entity
     {
         public string Name { get; private set; }
         public string Lastname { get; private set; }

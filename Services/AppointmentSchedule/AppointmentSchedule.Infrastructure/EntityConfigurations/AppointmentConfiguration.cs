@@ -27,9 +27,8 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
                 .HasColumnName("AppoinmentTime")
                 .IsRequired();
 
-            //appointmentConfiguration.Property(b => b.CountyId).HasField("_countyId");
-
-            appointmentConfiguration.Property<int>("_countyId")
+           
+            appointmentConfiguration.Property<int>("CountyId")
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
                 .HasColumnName("CountyId")
                 .IsRequired();
@@ -38,11 +37,9 @@ namespace AppointmentSchedule.Infrastructure.EntityConfigurations
                 .HasOne<County>()
                 .WithMany()
                 .IsRequired()
-                .HasForeignKey("_countyId");
+                .HasForeignKey("CountyId");
 
-            //appointmentConfiguration.Metadata
-            //    .FindNavigation(nameof(Appointment.Citizen))
-            //    .SetPropertyAccessMode(PropertyAccessMode.Field);
+          
 
             appointmentConfiguration
                 .HasOne(s => s.Citizen)

@@ -1,15 +1,15 @@
-﻿using AppointmentSchedule.Api.Business.Commands;
+﻿using AppointmentSchedule.Api.Business.Behaviors;
+using AppointmentSchedule.Api.Business.Commands;
+using AppointmentSchedule.Api.Business.EventHandlers;
+using AppointmentSchedule.Api.Business.Validations;
 using Autofac;
+using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace AppointmentSchedule.Api.Infrastructure.Modules
 {
-    public class MediatorModule : Module
+    public class MediatorModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -21,12 +21,15 @@ namespace AppointmentSchedule.Api.Infrastructure.Modules
                 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
             // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
-            builder.RegisterAssemblyTypes(typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(typeof(AppointmentCancellationEventHandler).GetTypeInfo().Assembly)
+                .AsClosedTypesOf(typeof(INotificationHandler<>));
+
+            builder.RegisterAssemblyTypes(typeof(AppointmentRegistrationEventHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(INotificationHandler<>));
 
             // Register the Command's Validators (Validators based on FluentValidation library)
             builder
-                .RegisterAssemblyTypes(typeof(CreateOrderCommandValidator).GetTypeInfo().Assembly)
+                .RegisterAssemblyTypes(typeof(CreateAppointmentScheduleValidator).GetTypeInfo().Assembly)
                 .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
                 .AsImplementedInterfaces();
 

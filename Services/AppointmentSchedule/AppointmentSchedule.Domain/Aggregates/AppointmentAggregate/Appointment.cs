@@ -21,8 +21,8 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
         private int _appointmentTypeId;
         public AppointmentType AppointmentType { get; private set; }
         
-        private int _countyId;
-        
+      
+        public int CountyId { get; private set; }
         private int _statusId;
         public StatusType Status { get; private set; }
 
@@ -43,7 +43,7 @@ namespace AppoinmentSchedule.Domain.Aggregates.AppointmentAggregate
             AppoinmentTime = appoinmentTime;
             _appointmentTypeId = appointmentTypeId;
             _statusId = StatusType.Active.Id;
-            _countyId = countyId;
+            CountyId = countyId;
 
             _citizen = new Citizen(name, lastname, tcIdentity, phoneNumber);
 

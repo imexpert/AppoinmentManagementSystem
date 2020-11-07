@@ -10,9 +10,8 @@ namespace AppointmentSchedule.Domain.Aggregates.AppointmentAggregate
 {
     public interface IAppointmentRepository : IRepository<Appointment>
     {
-        Appointment Add(Appointment order);
-        void Update(Appointment order);
+       
 
-        Task<Appointment> GetAsync(int orderId);
+        Task<Appointment> GetAsync(int appointmentId);
     }
 }

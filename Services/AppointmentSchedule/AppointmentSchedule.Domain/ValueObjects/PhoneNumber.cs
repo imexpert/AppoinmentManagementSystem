@@ -1,4 +1,5 @@
-﻿using NVI.DomainBase;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NVI.DomainBase;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,10 @@ namespace AppointmentSchedule.Domain.ValueObjects
             yield return CountryCode;
             yield return AreaCode;
             yield return Number;
+        }
+        public string ToString()
+        {
+            return CountryCode.ToString() + AreaCode.ToString() + this.Number.ToString();
         }
     }
 }

@@ -1,22 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppoinmentSchedule.Api.Controllers;
-using AppointmentSchedule.Api.Infrastructure.Filters;
-using AppointmentSchedule.Domain.Exceptions;
+using AppointmentSchedule.Api.Extensions;
+using AppointmentSchedule.Api.Infrastructure.Modules;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using NVI.Utilities.Filters;
+using System;
 
 namespace AppoinmentSchedule.Api
 {
@@ -40,12 +31,10 @@ namespace AppoinmentSchedule.Api
                 .Services
                 .AddAppointmentScheduleMvc()
                 .AddHealthChecks(Configuration)
-                .AddCustomDbContext(Configuration)
-                .AddCustomSwagger(Configuration)
-                .AddCustomIntegrations(Configuration)
-                .AddCustomConfiguration(Configuration)
-                .AddEventBus(Configuration)
-                .AddCustomAuthentication(Configuration);
+                .AddAppoinmentScheduleDbContext(Configuration)
+                .AddAppoinmentScheduleSwagger(Configuration)
+                .AddCustomConfiguration(Configuration);
+
             //configure autofac
 
             var container = new ContainerBuilder();
@@ -57,52 +46,6 @@ namespace AppoinmentSchedule.Api
             return new AutofacServiceProvider(container.Build());
         }
 
-        public static IServiceCollection AddAppointmentScheduleMvc(this IServiceCollection services)
-        {
-            // Add framework services.
-            services.AddControllers(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter<AppointmentScheduleException>));
-            })
-                // Added for functional tests
-                .AddApplicationPart(typeof(AppointmentScheduleController).Assembly)
-                .AddNewtonsoftJson()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            ;
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder
-                    .SetIsOriginAllowed((host) => true)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
-
-            return services;
-        }
-
-        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
-        {
-            var hcBuilder = services.AddHealthChecks();
-
-            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
-
-            hcBuilder
-                .AddSqlServer(
-                    configuration["ConnectionString"],
-                    name: "AppointmentScheduleDb-check",
-                    tags: new string[] { "appointmentscheduledb" });
-
-            hcBuilder
-                    .AddRabbitMQ(
-                        $"amqp://{configuration["EventBusConnection"]}",
-                        name: "appointmentmgm-rabbitmqbus-check",
-                        tags: new string[] { "rabbitmqbus" });
-
-            return services;
-        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -125,7 +68,11 @@ namespace AppoinmentSchedule.Api
         }
 
     }
+
+
+
 }
+
 
 
 
@@ -225,68 +172,9 @@ namespace AppoinmentSchedule.Api
 
 
 
-//    public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
-//    {
-//        services.AddEntityFrameworkSqlServer()
-//               .AddDbContext<OrderingContext>(options =>
-//               {
-//                   options.UseSqlServer(configuration["ConnectionString"],
-//                       sqlServerOptionsAction: sqlOptions =>
-//                       {
-//                           sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-//                           sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-//                       });
-//               },
-//                   ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
-//               );
 
-//        services.AddDbContext<IntegrationEventLogContext>(options =>
-//        {
-//            options.UseSqlServer(configuration["ConnectionString"],
-//                                 sqlServerOptionsAction: sqlOptions =>
-//                                 {
-//                                     sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-//                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-//                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-//                                 });
-//        });
 
-//        return services;
-//    }
 
-//    public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
-//    {
-//        services.AddSwaggerGen(options =>
-//        {
-//            options.DescribeAllEnumsAsStrings();
-//            options.SwaggerDoc("v1", new OpenApiInfo
-//            {
-//                Title = "eShopOnContainers - Ordering HTTP API",
-//                Version = "v1",
-//                Description = "The Ordering Service HTTP API"
-//            });
-//            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-//            {
-//                Type = SecuritySchemeType.OAuth2,
-//                Flows = new OpenApiOAuthFlows()
-//                {
-//                    Implicit = new OpenApiOAuthFlow()
-//                    {
-//                        AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-//                        TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-//                        Scopes = new Dictionary<string, string>()
-//                            {
-//                                { "orders", "Ordering API" }
-//                            }
-//                    }
-//                }
-//            });
-
-//            options.OperationFilter<AuthorizeCheckOperationFilter>();
-//        });
-
-//        return services;
-//    }
 
 //    public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
 //    {
@@ -345,30 +233,7 @@ namespace AppoinmentSchedule.Api
 //        return services;
 //    }
 
-//    public static IServiceCollection AddCustomConfiguration(this IServiceCollection services, IConfiguration configuration)
-//    {
-//        services.AddOptions();
-//        services.Configure<OrderingSettings>(configuration);
-//        services.Configure<ApiBehaviorOptions>(options =>
-//        {
-//            options.InvalidModelStateResponseFactory = context =>
-//            {
-//                var problemDetails = new ValidationProblemDetails(context.ModelState)
-//                {
-//                    Instance = context.HttpContext.Request.Path,
-//                    Status = StatusCodes.Status400BadRequest,
-//                    Detail = "Please refer to the errors property for additional details."
-//                };
 
-//                return new BadRequestObjectResult(problemDetails)
-//                {
-//                    ContentTypes = { "application/problem+json", "application/problem+xml" }
-//                };
-//            };
-//        });
-
-//        return services;
-//    }
 
 //    public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
 //    {
