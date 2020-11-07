@@ -1,8 +1,12 @@
 ﻿using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
+using AppointmentSchedule.Api.Business.Commands;
+using AppointmentSchedule.Api.Business.Queries;
 using AppointmentSchedule.Domain.Aggregates.AppointmentAggregate;
 using AppointmentSchedule.Infrastructure.Idempotency;
 using AppointmentSchedule.Infrastructure.Repositories;
 using Autofac;
+using NVI.EventBus.Abstractions;
 
 namespace AppointmentSchedule.Api.Infrastructure.Modules
 {
@@ -21,9 +25,11 @@ namespace AppointmentSchedule.Api.Infrastructure.Modules
         protected override void Load(ContainerBuilder builder)
         {
 
-            builder.Register(c => new OrderQueries(QueriesConnectionString))
-                .As<IOrderQueries>()
+
+            builder.RegisterType<AppointmentScheduleQueries>()
+                .As<IAppointmentScheduleQueries>()
                 .InstancePerLifetimeScope();
+
 
             builder.RegisterType<AppointmentRepository>()
                 .As<IAppointmentRepository>()
@@ -41,7 +47,7 @@ namespace AppointmentSchedule.Api.Infrastructure.Modules
                 .As<IRequestManager>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(typeof(CreateAppointmentScheduleCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
         }

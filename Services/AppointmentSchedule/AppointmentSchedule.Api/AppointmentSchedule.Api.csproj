@@ -54,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Framework\NVI.EventBus\NVI.EventBus.csproj" />
     <ProjectReference Include="..\..\..\Framework\NVI.Tools\NVI.Utilities.csproj" />
     <ProjectReference Include="..\..\..\Framework\NVI.WebHost.Extensions\NVI.WebHost.Extensions.csproj" />
     <ProjectReference Include="..\AppointmentSchedule.Infrastructure\AppointmentSchedule.Infrastructure.csproj" />

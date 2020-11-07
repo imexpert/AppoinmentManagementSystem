@@ -1,0 +1,23 @@
+rabbitmq:
+  connectionName: ntrada
+  hostnames:
+    - localhost
+  port: 5672
+  virtualHost: /
+  username: guest
+  password: guest
+  requestedConnectionTimeout: 3000
+  socketReadTimeout: 3000
+  socketWriteTimeout: 3000
+  requestedHeartbeat: 60
+  exchange:
+    declareExchange: true
+    durable: true
+    autoDelete: false
+    type: topic
+  messageContext:
+    enabled: true
+    header: message_context
+  logger:
+    enabled: true
+  spanContextHeader: span_context
